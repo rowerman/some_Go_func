@@ -1,0 +1,29 @@
+func permute(words []string) []string {
+    var result []string
+    backtrack(words, 0, &result)
+    return result
+}
+
+func backtrack(words []string, index int, result *[]string) {
+    if index == len(words)-1 {
+        // 当前排列已经完成，将其拼接成字符串并加入结果数组
+        *result = append(*result, join(words))
+        return
+    }
+    for i := index; i < len(words); i++ {
+        // 将当前元素与第一个元素交换
+        words[index], words[i] = words[i], words[index]
+        // 递归调用 backtrack 函数，生成排列组合
+        backtrack(words, index+1, result)
+        // 恢复原数组顺序
+        words[index], words[i] = words[i], words[index]
+    }
+}
+
+func join(words []string) string {
+    var builder strings.Builder
+    for _, word := range words {
+        builder.WriteString(word)
+    }
+    return builder.String()
+}
